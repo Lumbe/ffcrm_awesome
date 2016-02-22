@@ -1,6 +1,7 @@
 LeadsController.class_eval do
   protect_from_forgery with: :exception, except: [:create]
   prepend_before_filter :auth_user_before_filter, only: [:create]
+  after_action :set_group_permission, only: [:create]
 
   def auth_user_before_filter
     if request.post? && !params[:authorization].blank? && !params[:token].blank?
@@ -10,6 +11,11 @@ LeadsController.class_eval do
       params[:lead][:user_id] ||= user.id.to_s
       instance_variable_set("@current_user", user)
       logger.info(">>> web-to-lead: creating lead for user " + user.inspect)
+    end
+  end
+
+  def set_group_permission
+    Permission.create(group_id:1, asset_type: "Lead", asset_id: @lead.id)
     end
   end
 end
