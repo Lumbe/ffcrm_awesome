@@ -1,7 +1,7 @@
 LeadsController.class_eval do
   protect_from_forgery with: :exception, except: [:create]
   prepend_before_filter :auth_user_before_filter, only: [:create]
-  after_action :set_group_permission, only: [:create]
+  around_action :set_group_permission, only: [:create]
 
   def auth_user_before_filter
     if request.post? && !params[:authorization].blank? && !params[:token].blank?
