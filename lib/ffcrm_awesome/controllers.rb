@@ -15,7 +15,7 @@ LeadsController.class_eval do
   end
 
   def set_group_permission
-    Permission.create(group_id:1, asset_type: "Lead", asset_id: @lead.id)
+    Permission.create(group_id:1, asset_type: "Lead", user_id: 1, asset_id: @lead.id)
   end
 end
 
